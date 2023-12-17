@@ -1,0 +1,37 @@
+step "terraform-plan" {
+    name = "Terraform Plan"
+
+    action {
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-1"
+            Octopus.Action.Template.Version = "0"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "approve-plan" {
+    name = "Approve Plan"
+
+    action {
+        properties = {
+            Octopus.Action.RunOnServer = "false"
+            Octopus.Action.Template.Id = "ActionTemplates-3"
+            Octopus.Action.Template.Version = "0"
+        }
+    }
+}
+
+step "terraform-apply" {
+    name = "Terraform Apply"
+
+    action {
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-2"
+            Octopus.Action.Template.Version = "0"
+        }
+        worker_pool_variable = ""
+    }
+}
