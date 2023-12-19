@@ -47,7 +47,7 @@ step "terraform-plan" {
 
         container {
             feed = "nexus"
-            image = "#{TF_CONTAINER}"
+            image = "octopusdeploy/worker-tools:6.1.0-ubuntu.22.04"
         }
     }
 }
