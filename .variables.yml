@@ -1,0 +1,4 @@
+variables:
+  PIPELINE: 'gitlab'
+  PROJECT_NAME: "TERRAFORM.GITLAB.RKE"
+  OCTO_PROJECT_NAME: "RKE Clusters"

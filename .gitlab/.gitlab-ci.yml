@@ -1,0 +1,6 @@
+include:
+  - project: 'developerdurp/yml'
+    ref: 'main'
+    file:
+      - 'pipeline.yml'
+  - local: .variables.yml
