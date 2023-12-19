@@ -2,12 +2,53 @@ step "terraform-plan" {
     name = "Terraform Plan"
 
     action {
+        action_type = "Octopus.TerraformPlan"
         properties = {
+            Octopus.Action.GoogleCloud.ImpersonateServiceAccount = "False"
+            Octopus.Action.GoogleCloud.UseVMServiceAccount = "True"
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1"
-            Octopus.Action.Template.Version = "1"
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Terraform.AdditionalInitParams = "#{TF_INIT}"
+            Octopus.Action.Terraform.AllowPluginDownloads = "True"
+            Octopus.Action.Terraform.AzureAccount = "False"
+            Octopus.Action.Terraform.GoogleCloudAccount = "False"
+            Octopus.Action.Terraform.ManagedAccount = "None"
+            Octopus.Action.Terraform.PlanJsonOutput = "False"
+            Octopus.Action.Terraform.RunAutomaticFileSubstitution = "True"
+            Octopus.Action.Terraform.Template = <<-EOT
+                module "RKE" {
+                  source = "git::https://gitlab.com/developerdurp/tf-modules.git//TERRAFORM.PROXMOX.RKE"
+                
+                  dnsserver    = "#{dnsserver}"
+                  sshkeys      = "#{sshkeys}"
+                  vlan         = "#{vlan}"
+                  bridge       = "#{bridge}"
+                  appname      = "#{appname}"
+                  searchdomain = "#{searchdomain}"
+                
+                  master = {
+                    count    = "#{mastercount}"
+                    template = "#{master-template}"
+                    cores    = "#{mastercores}"
+                    memory   = "#{mastermemory}"
+                    node     = "#{masternode}"
+                    ip       = "#{masterip}"
+                  }
+                
+                  pm_api_url          = "#{pm_api_url}"
+                  pm_api_token_id     = "#{pm_api_token_id}"
+                  pm_api_token_secret = "#{pm_api_token_secret}"
+                }
+                EOT
+            Octopus.Action.Terraform.TemplateParameters = "{}"
+            OctopusUseBundledTooling = "False"
         }
         worker_pool_variable = ""
+
+        container {
+            feed = "nexus"
+            image = "#{TF_CONTAINER}"
+        }
     }
 }
 
@@ -20,18 +61,5 @@ step "approve-plan" {
             Octopus.Action.Template.Id = "ActionTemplates-3"
             Octopus.Action.Template.Version = "0"
         }
-    }
-}
-
-step "terraform-apply" {
-    name = "Terraform Apply"
-
-    action {
-        properties = {
-            Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-2"
-            Octopus.Action.Template.Version = "1"
-        }
-        worker_pool_variable = ""
     }
 }
