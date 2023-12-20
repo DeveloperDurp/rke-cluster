@@ -1,8 +1,7 @@
-step "infra" {
-    name = "Infra"
+step "terraform-plan" {
+    name = "Terraform Plan"
 
-    action "terraform-plan" {
-        name = "Terraform Plan"
+    action {
         properties = {
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1"
@@ -15,18 +14,24 @@ step "infra" {
             image = "#{TF_CONTAINER}"
         }
     }
+}
 
-    action "approve-plan" {
-        name = "Approve Plan"
+step "approve-plan" {
+    name = "Approve Plan"
+
+    action {
         properties = {
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Template.Id = "ActionTemplates-3"
             Octopus.Action.Template.Version = "0"
         }
     }
+}
+
+step "infra" {
+    name = "Terraform Apply"
 
     action "terraform-apply" {
-        name = "Terraform Apply"
         properties = {
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-2"
