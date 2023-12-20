@@ -1,7 +1,8 @@
-step "terraform-plan" {
-    name = "Terraform Plan"
+step "infra" {
+    name = "Infra"
 
-    action {
+    action "terraform-plan" {
+        name = "Terraform Plan"
         properties = {
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1"
@@ -14,16 +15,28 @@ step "terraform-plan" {
             image = "#{TF_CONTAINER}"
         }
     }
-}
 
-step "approve-plan" {
-    name = "Approve Plan"
-
-    action {
+    action "approve-plan" {
+        name = "Approve Plan"
         properties = {
             Octopus.Action.RunOnServer = "false"
             Octopus.Action.Template.Id = "ActionTemplates-3"
             Octopus.Action.Template.Version = "0"
+        }
+    }
+
+    action "terraform-apply" {
+        name = "Terraform Apply"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-2"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool_variable = ""
+
+        container {
+            feed = "nexus"
+            image = "#{TF_CONTAINER}"
         }
     }
 }
