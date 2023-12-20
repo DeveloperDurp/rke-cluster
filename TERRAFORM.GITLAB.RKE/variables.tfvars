@@ -6,12 +6,12 @@ appname      = "#{appname}"
 searchdomain = "#{searchdomain}"
 
 master = {
-  count    = #{count}
-  template = "#{template}"
-  cores    = #{cores}
-  memory   = "#{memory}"
-  node     = [#{node}]
-  ip       = [#{ip}]
+  count    = #{master-count}
+  template = "#{master-template}"
+  cores    = #{master-cores}
+  memory   = "#{master-memory}"
+  node     = [#{master-node}]
+  ip       = [#{master-ip}]
 }
 
 pm_api_url          = "#{pm_api_url}"
