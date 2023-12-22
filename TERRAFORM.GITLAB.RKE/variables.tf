@@ -46,3 +46,14 @@ variable "master" {
   })
 }
 
+variable "node" {
+  description = "Defaults of worker nodes in K3S"
+  type = object({
+    count    = number
+    template = string
+    cores    = number
+    memory   = number
+    node     = list(string)
+    ip       = list(number)
+  })
+}
