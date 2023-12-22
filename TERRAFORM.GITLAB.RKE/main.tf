@@ -38,7 +38,7 @@ resource "proxmox_vm_qemu" "node" {
   count       = var.node.count
   ciuser      = "administrator"
   vmid        = "${var.vlan}${var.node.ip[count.index]}"
-  name        = "rke-m-${var.appname}${format("%02d", count.index + 1)}"
+  name        = "rke-n-${var.appname}${format("%02d", count.index + 1)}"
   target_node = var.node.node[count.index]
   clone       = var.node.template
   qemu_os     = "other"
